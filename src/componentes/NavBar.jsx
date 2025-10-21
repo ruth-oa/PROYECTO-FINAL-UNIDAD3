@@ -74,12 +74,13 @@ export default function NavBar() {
               </div>
             </div>
           ) : (
-            <Link
-              to="/login"
-              className="bg-primary text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-800 transition"
-            >
-              Iniciar sesión
-            </Link>
+<Link
+  to="/login"
+  className="bg-gray-200 text-blue-700 px-4 py-2 rounded-md font-semibold hover:bg-blue-800 hover:text-white transition"
+>
+  Iniciar sesión
+</Link>
+
           )}
         </div>
       </div>
@@ -88,12 +89,12 @@ export default function NavBar() {
       <div className="bg-gray-100 border-t">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-10 py-2 text-gray-700 font-medium">
           <Link to="/catalogo" className="hover:text-primary transition-colors">
-            Catálogo
+            Los más vendidos
           </Link>
 
           <div className="relative group">
             <span className="cursor-pointer hover:text-primary transition-colors">
-              Novedades ⬇
+              Novedades
             </span>
             {/* Dropdown */}
             <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border rounded-md shadow-md py-2 w-48">
@@ -120,7 +121,7 @@ export default function NavBar() {
 
           <div className="relative group">
             <span className="cursor-pointer hover:text-primary transition-colors">
-              Ofertas ⬇
+              Ficción
             </span>
             {/* Dropdown */}
             <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border rounded-md shadow-md py-2 w-48">
@@ -144,6 +145,90 @@ export default function NavBar() {
               </Link>
             </div>
           </div>
+
+                    <div className="relative group">
+            <span className="cursor-pointer hover:text-primary transition-colors">
+              No Ficción
+            </span>
+            {/* Dropdown */}
+            <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border rounded-md shadow-md py-2 w-48">
+              <Link
+                to="/novedades/infantil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Literatura Infantil
+              </Link>
+              <Link
+                to="/novedades/juvenil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Juvenil
+              </Link>
+              <Link
+                to="/novedades/adultos"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Adultos
+              </Link>
+            </div>
+          </div>
+
+                    <div className="relative group">
+            <span className="cursor-pointer hover:text-primary transition-colors">
+              Infantil
+            </span>
+            {/* Dropdown */}
+            <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border rounded-md shadow-md py-2 w-48">
+              <Link
+                to="/novedades/infantil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Literatura Infantil
+              </Link>
+              <Link
+                to="/novedades/juvenil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Juvenil
+              </Link>
+              <Link
+                to="/novedades/adultos"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Adultos
+              </Link>
+            </div>
+          </div>
+
+
+                    <div className="relative group">
+            <span className="cursor-pointer hover:text-primary transition-colors">
+              Juvenil
+            </span>
+            {/* Dropdown */}
+            <div className="absolute left-0 mt-1 hidden group-hover:block bg-white border rounded-md shadow-md py-2 w-48">
+              <Link
+                to="/novedades/infantil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Literatura Infantil
+              </Link>
+              <Link
+                to="/novedades/juvenil"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Juvenil
+              </Link>
+              <Link
+                to="/novedades/adultos"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Adultos
+              </Link>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </header>

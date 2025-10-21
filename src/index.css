@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+
 
 /* 🎨 Tipografía y fondo base */
 body {

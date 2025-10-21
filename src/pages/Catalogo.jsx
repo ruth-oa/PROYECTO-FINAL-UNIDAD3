@@ -1,10 +1,17 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import BookCard from "../componentes/BookCard";
 import { useCart } from "../context/cartContext";
 
 export default function Catalogo() {
   const { addToCart } = useCart();
+  const location = useLocation();
 
+  // 1️⃣ Capturar el texto del buscador (ejemplo: /catalogo?q=amor)
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get("q")?.toLowerCase() || "";
+
+  // 2️⃣ Tu base de datos local (secciones)
   const secciones = [
     {
       titulo: "🏅 Premio Nobel de Literatura",
@@ -53,6 +60,37 @@ export default function Catalogo() {
     },
   ];
 
+  // 3️⃣ Combinar todos los libros en un solo array para buscar
+  const todosLosLibros = secciones.flatMap((sec) => sec.libros);
+
+  // 4️⃣ Filtrar los libros según el texto del buscador
+  const resultados = todosLosLibros.filter(
+    (book) =>
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query)
+  );
+
+  // 5️⃣ Si hay búsqueda activa, mostrar resultados planos
+  if (query) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        <h2 className="text-3xl font-bold mb-6 text-primary">
+          Resultados para: <span className="text-blue-600">"{query}"</span>
+        </h2>
+        {resultados.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {resultados.map((book) => (
+              <BookCard key={book.id} book={book} onAdd={addToCart} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No se encontraron resultados.</p>
+        )}
+      </div>
+    );
+  }
+
+  // 6️⃣ Si no hay búsqueda, mostrar secciones completas
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       {secciones.map((sec, i) => (
