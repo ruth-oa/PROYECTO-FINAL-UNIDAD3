@@ -1,110 +1,293 @@
-import React from "react";
+// src/pages/Catalogo.jsx
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import BookCard from "../componentes/BookCard";
-import { useCart } from "../context/cartContext";
+
+const CATEGORIES = [
+  { key: "love", name: "💖 Romance" },
+  { key: "science_fiction", name: "🚀 Ciencia Ficción" },
+  { key: "fantasy", name: "🧙‍♀️ Fantasía" },
+  { key: "history", name: "📜 Historia" },
+  { key: "mystery", name: "🕵️ Misterio" },
+];
+
+const LANGUAGES = [
+  { key: "en", name: "Inglés" },
+  { key: "es", name: "Español" },
+  { key: "fr", name: "Francés" },
+];
 
 export default function Catalogo() {
-  const { addToCart } = useCart();
   const location = useLocation();
+  const queryParam = new URLSearchParams(location.search).get("q") || "";
 
-  // 1️⃣ Capturar el texto del buscador (ejemplo: /catalogo?q=amor)
-  const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get("q")?.toLowerCase() || "";
+  const [booksByCategory, setBooksByCategory] = useState({});
+  const [searchResults, setSearchResults] = useState([]);
+  const [offsets, setOffsets] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [sortOption, setSortOption] = useState("");
 
-  // 2️⃣ Tu base de datos local (secciones)
-  const secciones = [
-    {
-      titulo: "🏅 Premio Nobel de Literatura",
-      libros: [
-        { id: 1, title: "Voces de Chernóbil", author: "Svetlana Alexievich", price: 39.9, imgLink: "https://www.elvirrey.com/imagenes/9786124/978612426267.GIF" },
-        { id: 2, title: "Letras completas 1962-2012", author: "Bob Dylan", price: 55.0, imgLink: "https://www.diariofolk.com/wp-content/uploads/2017/01/dylan-malpaso.jpg" },
-        { id: 3, title: "Los restos del día", author: "Kazuo Ishiguro", price: 32.5, imgLink: "https://cms.anagrama-ed.es/uploads/media/portadas/0001/16/7fe48a7f5f586fa10c1be5219edc00c38d995dfa.jpeg" },
-        { id: 4, title: "Los errantes", author: "Olga Tokarczuk", price: 28.5, imgLink: "https://cms.anagrama-ed.es/uploads/media/portadas/0001/23/7494c6c4f113716984ae22c5576459a8e82f5ca2.jpeg" },
-        { id: 5, title: "El miedo del portero al penalti", author: "Peter Handke", price: 25.9, imgLink: "https://www.penguinlibros.com/pe/3502768/el-miedo-del-portero-al-penalti.jpg" },
-        { id: 6, title: "La vegetariana", author: "Han Kang", price: 35.0, imgLink: "https://www.penguinlibros.com/pe/4593277/la-vegetariana.jpg" },
-      ],
-    },
-    {
-      titulo: "🔥 Los más leídos",
-      libros: [
-        { id: 7, title: "El último secreto", author: "Dan Brown", price: 45.0, imgLink: "https://imagessl3.casadellibro.com/a/l/s5/63/9788408306863.webp" },
-        { id: 8, title: "El recluso", author: "Freida McFadden", price: 42.0, imgLink: "https://www.hola.com/horizon/original_aspect_ratio/25f8f73881ec-libro-el-recluso.jpg?im=Resize=(960),type=downsize" },
-        { id: 9, title: "El círculo de los días", author: "Ken Follet", price: 49.9, imgLink: "https://www.hola.com/horizon/original_aspect_ratio/b94203323ef1-libro-el-circulo-de-los-dias-ken-follet.jpg?im=Resize=(960),type=downsize" },
-        { id: 10, title: "Los tres mundos", author: "Santiago Posteguillo", price: 38.9, imgLink: "https://imagessl1.casadellibro.com/a/l/s5/01/9788466682701.webp" },
-      ],
-    },
-    {
-      titulo: "💖 Romance",
-      libros: [
-        { id: 11, title: "Orgullo y Prejuicio", author: "Jane Austen", price: 19.9, imgLink: "https://www.elvirrey.com/imagenes/9788415/978841561878.GIF" },
-        { id: 12, title: "El amor en los tiempos del cólera", author: "Gabriel García Márquez", price: 22.9, imgLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLBI3-fxXadQ5fywcC987mIEWxk_lYYUWPGw&s" },
-        { id: 13, title: "La hipótesis del amor", author: "Ali Hazelwood", price: 24.5, imgLink: "https://iberoperu.vtexassets.com/arquivos/ids/259223-800-1156?v=637970077803930000&width=800&height=1156&aspect=true" },
-        { id: 14, title: "Romper el círculo", author: "Colleen Hoover", price: 26.9, imgLink: "https://images.cdn3.buscalibre.com/fit-in/360x360/aa/c4/aac495a3ef1a84293a0e7771c26b5c4e.jpg" },
-      ],
-    },
-    {
-      titulo: "🚀 Ciencia ficción",
-      libros: [
-        { id: 15, title: "1984", author: "George Orwell", price: 18.5, imgLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAzNIc5fpBTO-bqLX4w5QDJfEVDHbJp-Ptg&s" },
-        { id: 16, title: "Dune", author: "Frank Herbert", price: 40.0, imgLink: "https://images.cdn2.buscalibre.com/fit-in/360x360/0d/73/0d739e6e0e837d7637f97f9aad3639b4.jpg" },
-        { id: 17, title: "Fahrenheit 451", author: "Ray Bradbury", price: 20.5, imgLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb9nGJedxNrEXSt2ydrENeLju_ONeI7gMEig&s" },
-      ],
-    },
-    {
-      titulo: "👻 Terror",
-      libros: [
-        { id: 18, title: "Drácula", author: "Bram Stoker", price: 19.9, imgLink: "https://images.cdn2.buscalibre.com/fit-in/360x360/15/e5/15e55a11bf7ab69d43d90567a7b55827.jpg" },
-        { id: 19, title: "It", author: "Stephen King", price: 39.9, imgLink: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTOMQxy4yKycBdzFj0uId3TOxtvyplk5F6TA&s" },
-        { id: 20, title: "Cuentos extraordinarios", author: "Edgar Allan Poe", price: 22.0, imgLink: "https://images.cdn3.buscalibre.com/fit-in/360x360/40/33/403322b76b92a9cca36c51f7ceb85926.jpg" },
-      ],
-    },
-  ];
+  const containerRefs = useRef({});
 
-  // 3️⃣ Combinar todos los libros en un solo array para buscar
-  const todosLosLibros = secciones.flatMap((sec) => sec.libros);
+  // ===============================
+  //      FETCH LIBROS POR CATEGORÍA
+  // ===============================
+  const fetchBooks = async (catKey, offset = 0, append = false) => {
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/subjects/${catKey}.json?limit=100&offset=${offset}`
+      );
+      const data = await res.json();
 
-  // 4️⃣ Filtrar los libros según el texto del buscador
-  const resultados = todosLosLibros.filter(
-    (book) =>
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query)
-  );
+      const formatted = (data.works || []).map((b) => {
+        const price = parseFloat((Math.random() * 30 + 10).toFixed(2));
+        return {
+          id: b.key.replace("/works/", ""),
+          imgLink: b.cover_id
+            ? `https://covers.openlibrary.org/b/id/${b.cover_id}-M.jpg`
+            : "https://via.placeholder.com/150x220?text=Sin+Portada",
+          title: b.title,
+          author: b.authors?.[0]?.name ?? "Autor desconocido",
+          pages: b.number_of_pages_median ?? Math.floor(Math.random() * 400 + 50),
+          price: price,
+          priceDisplay: `$${price}`, // agregado
+          language: b.languages?.[0]?.key?.replace("/languages/", "") ?? "en",
+          category: catKey,
+        };
+      });
 
-  // 5️⃣ Si hay búsqueda activa, mostrar resultados planos
-  if (query) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <h2 className="text-3xl font-bold mb-6 text-primary">
-          Resultados para: <span className="text-blue-600">"{query}"</span>
-        </h2>
-        {resultados.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {resultados.map((book) => (
-              <BookCard key={book.id} book={book} onAdd={addToCart} />
+      setBooksByCategory((prev) => ({
+        ...prev,
+        [catKey]: append
+          ? [...(prev[catKey] || []), ...formatted]
+          : formatted,
+      }));
+
+      setOffsets((prev) => ({
+        ...prev,
+        [catKey]: offset + 12,
+      }));
+    } catch (err) {
+      console.error("Error cargando libros para", catKey, err);
+    }
+  };
+
+  // ===============================
+  //       FETCH RESULTADOS BUSQUEDA
+  // ===============================
+  const fetchSearchResults = async (query) => {
+    if (!query) return;
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`
+      );
+      const data = await res.json();
+
+      const formatted = (data.docs || []).map((b) => {
+        const price = parseFloat((Math.random() * 30 + 10).toFixed(2));
+        return {
+          id: b.key.replace("/works/", ""),
+          imgLink: b.cover_i
+            ? `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`
+            : "https://via.placeholder.com/150x220?text=Sin+Portada",
+          title: b.title,
+          author: b.author_name?.[0] ?? "Autor desconocido",
+          pages: b.number_of_pages_median ?? Math.floor(Math.random() * 400 + 50),
+          price: price,
+          priceDisplay: `$${price}`, // agregado
+          language: b.language?.[0] ?? "en",
+          category: "", // en búsqueda no tenemos categoría
+        };
+      });
+
+      setSearchResults(formatted);
+    } catch (err) {
+      console.error("Error buscando libros:", err);
+    }
+  };
+
+  // ===============================
+  //           EFECTOS
+  // ===============================
+  useEffect(() => {
+    if (!queryParam) {
+      CATEGORIES.forEach((cat) => fetchBooks(cat.key, 0, false));
+    }
+  }, [queryParam]);
+
+  useEffect(() => {
+    if (queryParam) {
+      fetchSearchResults(queryParam);
+    }
+  }, [queryParam]);
+
+  // ===============================
+  //          SCROLL INFINITO
+  // ===============================
+  useEffect(() => {
+    if (queryParam) return;
+
+    const observers = [];
+    CATEGORIES.forEach((cat) => {
+      const container = containerRefs.current[cat.key];
+      if (!container) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              fetchBooks(cat.key, offsets[cat.key] || 12, true);
+            }
+          });
+        },
+        { root: container, threshold: 1.0 }
+      );
+
+      const sentinel = document.createElement("div");
+      sentinel.style.width = "1px";
+      sentinel.style.height = "1px";
+      container.appendChild(sentinel);
+
+      observer.observe(sentinel);
+      observers.push({ observer, container, sentinel });
+    });
+
+    return () => {
+      observers.forEach(({ observer, container, sentinel }) => {
+        observer.unobserve(sentinel);
+        container.removeChild(sentinel);
+      });
+    };
+  }, [offsets, queryParam]);
+
+  // ===============================
+  //       HANDLERS
+  // ===============================
+  const handleAdd = (book) => console.log("Añadido al carrito:", book);
+  const handleCategoryChange = (catKey) =>
+    setSelectedCategory(selectedCategory === catKey ? "" : catKey);
+  const handleLanguageChange = (langKey) =>
+    setSelectedLanguage(selectedLanguage === langKey ? "" : langKey);
+  const handlePriceChange = (min, max) => setPriceRange([min, max]);
+  const handleSortChange = (option) => setSortOption(option);
+
+  // ===============================
+  //          FILTROS Y ORDENAMIENTO
+  // ===============================
+  const applyFilters = (books) => {
+    let filtered = [...books];
+
+    if (selectedCategory) {
+      filtered = filtered.filter((b) => b.category === selectedCategory);
+    }
+
+    if (selectedLanguage) {
+      filtered = filtered.filter((b) => b.language === selectedLanguage);
+    }
+
+    filtered = filtered.filter(
+      (b) => b.price >= priceRange[0] && b.price <= priceRange[1]
+    );
+
+    if (sortOption === "alphaAsc")
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortOption === "alphaDesc")
+      filtered.sort((a, b) => b.title.localeCompare(a.title));
+    if (sortOption === "pagesAsc") filtered.sort((a, b) => a.pages - b.pages);
+    if (sortOption === "pagesDesc") filtered.sort((a, b) => b.pages - a.pages);
+
+    return filtered;
+  };
+
+  // ===============================
+  //          RENDER
+  // ===============================
+  const booksToRender = queryParam
+    ? applyFilters(searchResults)
+    : applyFilters(Object.values(booksByCategory).flat());
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-6 flex gap-6">
+      {/* -------- SIDEBAR FILTROS -------- */}
+      <aside className="w-64 bg-white p-4 rounded shadow space-y-6">
+        <h3 className="font-bold text-lg">Filtros</h3>
+
+        {/* Categorías */}
+        <div>
+          <h4 className="font-semibold mb-2">Categorías</h4>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.key}
+              onClick={() => handleCategoryChange(cat.key)}
+              className={`block w-full text-left px-2 py-1 rounded ${
+                selectedCategory === cat.key ? "bg-blue-100" : "hover:bg-gray-100"
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Idiomas */}
+        <div>
+          <h4 className="font-semibold mb-2">Idioma</h4>
+          {LANGUAGES.map((lang) => (
+            <button
+              key={lang.key}
+              onClick={() => handleLanguageChange(lang.key)}
+              className={`block w-full text-left px-2 py-1 rounded ${
+                selectedLanguage === lang.key ? "bg-blue-100" : "hover:bg-gray-100"
+              }`}
+            >
+              {lang.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Precio */}
+        <div>
+          <h4 className="font-semibold mb-2">Precio</h4>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={priceRange[1]}
+            onChange={(e) => handlePriceChange(0, parseInt(e.target.value))}
+            className="w-full"
+          />
+          <p>Hasta ${priceRange[1]}</p>
+        </div>
+      </aside>
+
+      {/* -------- MAIN CONTENT -------- */}
+      <main className="flex-1">
+        {/* Toolbar superior */}
+        <div className="flex items-center justify-end gap-4 mb-4">
+          <select
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="border rounded px-2 py-1"
+          >
+            <option value="">Ordenar por</option>
+            <option value="alphaAsc">Título A-Z</option>
+            <option value="alphaDesc">Título Z-A</option>
+            <option value="pagesAsc">Páginas ↑</option>
+            <option value="pagesDesc">Páginas ↓</option>
+          </select>
+        </div>
+
+        {/* Grid de libros */}
+        {booksToRender.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {booksToRender.map((book) => (
+              <BookCard key={book.id} book={book} onAdd={handleAdd} />
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No se encontraron resultados.</p>
+          <p className="text-gray-500">No se encontraron libros...</p>
         )}
-      </div>
-    );
-  }
-
-  // 6️⃣ Si no hay búsqueda, mostrar secciones completas
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      {secciones.map((sec, i) => (
-        <section key={i} className="mb-16">
-          <h2 className="text-3xl font-bold mb-6 text-primary border-b-4 border-blue-200 inline-block pb-2">
-            {sec.titulo}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {sec.libros.map((book) => (
-              <BookCard key={book.id} book={book} onAdd={addToCart} />
-            ))}
-          </div>
-        </section>
-      ))}
+      </main>
     </div>
   );
 }
