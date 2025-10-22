@@ -1,94 +1,57 @@
-// src/componentes/BookRow.jsx
-import React, { useEffect, useRef, useState } from "react";
-import BookCard from "./BookCard";
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-export default function BookRow({ title, subject }) {
-  const [books, setBooks] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const scrollRef = useRef(null);
-
-  // función para traer libros de Open Library
-  const fetchBooks = async (pageNum) => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `https://openlibrary.org/search.json?subject=${encodeURIComponent(
-          subject
-        )}&page=${pageNum}&limit=12`
-      );
-      const data = await res.json();
-
-      const newBooks = data.docs.map((b) => {
-        const price = (Math.random() * 30 + 10).toFixed(2); // precio aleatorio entre 10 y 40
-        return {
-          id: b.key,
-          title: b.title,
-          author: b.author_name ? b.author_name[0] : "Autor desconocido",
-          imgLink: b.cover_i
-            ? `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`
-            : "https://via.placeholder.com/150x220?text=Sin+Portada",
-          price: price,
-          priceDisplay: `$${price}`,
-        };
-      });
-
-      // si ya no hay más resultados
-      if (newBooks.length === 0) setHasMore(false);
-
-      setBooks((prev) => [...prev, ...newBooks]);
-    } catch (err) {
-      console.error("Error cargando libros:", err);
-    } finally {
-      setLoading(false);
-    }
+export default function BookRow({ title, books = [], onAdd }) {
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
+      { breakpoint: 768, settings: { slidesToShow: 2 } },
+      { breakpoint: 480, settings: { slidesToShow: 1 } },
+    ],
   };
-
-  // carga inicial
-  useEffect(() => {
-    fetchBooks(1);
-  }, [subject]);
-
-  // detectar cuando se scrollea al final
-  const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el || loading || !hasMore) return;
-
-    const rightEdge = el.scrollLeft + el.clientWidth;
-    if (rightEdge >= el.scrollWidth - 100) {
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  // cargar más cuando cambia la página
-  useEffect(() => {
-    if (page > 1) fetchBooks(page);
-  }, [page]);
 
   return (
-    <section className="mb-6">
-      <h2 className="text-lg font-bold text-gray-800 mb-2 px-2">{title}</h2>
-      <div
-        ref={scrollRef}
-        onScroll={handleScroll}
-        className="
-          flex gap-3 overflow-x-auto scrollbar-hide px-2
-          snap-x snap-mandatory scroll-smooth
-        "
-      >
+    <section className="mb-10"> {/* menos espacio inferior */}
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">{title}</h2>
+
+      <Slider {...settings}>
         {books.map((book) => (
-          <div key={book.id} className="snap-start min-w-[130px]">
-            <BookCard book={book} />
+          <div key={book.id} className="px-2"> {/* menos padding lateral */}
+            <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center text-center p-4 border border-gray-100">
+              
+              {/* Imagen centrada */}
+              <div className="w-full flex justify-center mb-3">
+                <img
+                  src={book.imgLink}
+                  alt={book.title}
+                  className="w-32 h-48 object-cover rounded-md"
+                />
+              </div>
+
+              {/* Información */}
+              <h3 className="text-base font-medium text-gray-800 mb-1">{book.title}</h3>
+              <p className="text-sm text-gray-500 mb-1">{book.author}</p>
+              <p className="text-gray-700 font-semibold mb-3">S/ {book.price.toFixed(2)}</p>
+
+              {/* Botón más compacto */}
+              <button
+                onClick={() => onAdd(book)}
+                className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+              >
+                Añadir al carrito
+              </button>
+            </div>
           </div>
         ))}
-
-        {loading && (
-          <div className="flex items-center justify-center px-4 text-gray-400">
-            Cargando más libros...
-          </div>
-        )}
-      </div>
+      </Slider>
     </section>
   );
 }
