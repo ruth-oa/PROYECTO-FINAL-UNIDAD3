@@ -11,15 +11,10 @@ export default function Inicio() {
   const { addToCart } = useCart();
 
   return (
-    <div className="min-h-screen bg-[#f9f9f9]">
-      <main className="max-w-7xl mx-auto px-4 py-10">
+    <div className="min-h-screen">
+      <main className="max-w-7xl mx-auto px-4 py-8">
 
-        {/* 🧭 Carrusel principal */}
-        <section className="mb-12">
-          <HeroCarousel />
-        </section>
-
-        {/* Encabezado principal */}
+    {/* Encabezado principal */}
         <section className="mb-12 text-center">
           <h1 className="text-4xl font-bold text-gray-800">
             Bienvenido a <span className="text-blue-800">LibroMundo</span>
@@ -29,17 +24,22 @@ export default function Inicio() {
           </p>
         </section>
 
-        <BookRow
-  title="📚 Más Vendidos"
-  books={[
-    { id: 1, title: "El Último Secreto", author: "Dan Brown", price: 19.99, imgLink: "https://imagessl3.casadellibro.com/a/l/s5/63/9788408306863.webp " },
-    { id: 2, title: "El recluso", author: "Freida McFadden", price: 25.5, imgLink: "https://www.hola.com/horizon/original_aspect_ratio/25f8f73881ec-libro-el-recluso.jpg?im=Resize=(960),type=downsize " },
-    { id: 3, title: "Crepúsculo", author: "Stephenie Meyer", price: 15.0, imgLink: "https://www.hola.com/horizon/original_aspect_ratio/c482df5608f5-libro-crepusculo.jpg?im=Resize=(960),type=downsize " },
-    { id: 4, title: "El círculo de los días", author: "Ken Follet", price: 18.0, imgLink: "https://www.hola.com/horizon/original_aspect_ratio/b94203323ef1-libro-el-circulo-de-los-dias-ken-follet.jpg?im=Resize=(960),type=downsize " },
-    { id: 5, title: "Los tres mundos", author: "Santiago Posteguillo", price: 22.0, imgLink: "https://imagessl1.casadellibro.com/a/l/s5/01/9788466682701.webp " },
-  ]}
-  onAdd={addToCart}
-/>
+        {/* ✅ CARRUSEL HERO */}
+        <HeroCarousel />
+
+        
+
+
+        {/* Más vendidos dinámico con BookRow */}
+        <BookRow title="📚 Más Vendidos" subject="bestsellers" onAdd={addToCart} />
+
+                {/* Título de bienvenida */}
+        <section className="mb-10">
+          <div className="rounded-lg p-8 bg-gradient-to-r from-blue-700 to-blue-500 text-white">
+            <h1 className="text-4xl font-extrabold">Descubre las ultimas nvoedades 🚀</h1>
+            <p className="mt-2">Miles de títulos te esperan en LibroMundo.</p>
+          </div>
+        </section>
 
         {/* ✍️ Autores destacados */}
         <section className="mb-16">
@@ -58,7 +58,7 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* 💬 Reseñas */}
+         {/* 💬 Reseñas */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">
             Opiniones de nuestros lectores
