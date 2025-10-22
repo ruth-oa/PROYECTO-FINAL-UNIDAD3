@@ -12,6 +12,8 @@ import Carrito from "./pages/Carrito";
 import { UserProvider } from "./context/userContext";
 import { CartProvider } from "./context/cartContext";
 
+
+
 export default function App() {
   return (
     <UserProvider>
