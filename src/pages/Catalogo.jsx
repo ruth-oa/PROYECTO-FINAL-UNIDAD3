@@ -254,7 +254,8 @@ export default function Catalogo() {
             min={0}
             max={100}
             value={priceRange[1]}
-            onChange={(e) => handlePriceChange(0, parseInt(e.target.value))}
+            onChange={(e) => handlePriceChange(priceRange[0], parseInt(e.target.value))}
+
             className="w-full"
           />
           <p>Hasta ${priceRange[1]}</p>

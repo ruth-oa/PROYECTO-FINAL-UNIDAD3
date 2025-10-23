@@ -142,6 +142,9 @@ export default function NavBar() {
             <Link to="/juvenil" className="hover:text-primary">
               Juvenil
             </Link>
+            <Link to="/foro" className="hover:text-primary">
+              Foro
+            </Link>
           </nav>
         </div>
 

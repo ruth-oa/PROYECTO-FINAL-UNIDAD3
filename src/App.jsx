@@ -11,6 +11,9 @@ import Registro from "./pages/Registro";
 import Carrito from "./pages/Carrito";
 import { UserProvider } from "./context/userContext";
 import { CartProvider } from "./context/cartContext";
+import Novedades from "./pages/Novedades";
+import Foro from "./pages/Foro";
+
 
 export default function App() {
   return (
@@ -25,6 +28,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/carrito" element={<Carrito />} />
+            <Route path="/foro" element={<Foro />} />
+             <Route path="/novedades" element={<Novedades />} />
             <Route path="*" element={<div className="p-6">Página no encontrada</div>} />
           </Routes>
           <Footer />
