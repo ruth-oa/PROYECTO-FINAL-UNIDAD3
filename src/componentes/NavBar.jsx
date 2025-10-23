@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { User } from "lucide-react";
 
 export default function NavBar() {
-  const { user, logout } = useUser();
+  const { user } = useUser();
   const { cart } = useCart();
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);

@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Carrito from "./pages/Carrito";
 import Perfil from "./pages/Perfil";
+import Novedades from "./pages/Novedades";
 import { UserProvider } from "./context/userContext";
 import { CartProvider } from "./context/cartContext";
 import CatalogoCategoria from "./pages/CatalogoCategoria";
@@ -32,7 +33,9 @@ export default function App() {
             <Route path="/registro" element={<Registro />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/novedades" element={<Novedades />} />
             <Route path="*" element={<div className="p-6">Página no encontrada</div>} />
+
           </Routes>
           <Footer />
         </Router>
