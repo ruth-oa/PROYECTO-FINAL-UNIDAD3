@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
 import { useCart } from "../context/cartContext";
 import { Menu, X } from "lucide-react";
+import { User } from "lucide-react";
 
 export default function NavBar() {
   const { user, logout } = useUser();
@@ -72,27 +73,19 @@ export default function NavBar() {
 
           {/* Usuario */}
           {user ? (
-            <div className="relative group">
-              <button className="font-semibold text-primary hover:text-blue-800 transition">
-                {user.name} ⬇
-              </button>
-              <div className="absolute right-0 mt-2 hidden group-hover:block bg-white border rounded-md shadow-md w-40 py-2">
-                <Link to="/perfil" className="block px-4 py-2 hover:bg-gray-100">
-                  Perfil
-                </Link>
-                <button
-                  onClick={logout}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            </div>
+            <Link
+              to="/perfil"
+              className="flex items-center gap-1 font-semibold text-primary hover:text-blue-800 transition"
+            >
+              <User className="w-5 h-5" /> {/* Icono */}
+              {user.name}
+            </Link>
           ) : (
             <Link
               to="/login"
-              className="bg-gray-200 text-blue-700 px-4 py-2 rounded-md font-semibold hover:bg-blue-800 hover:text-white transition"
+              className="flex items-center gap-1 bg-gray-200 text-blue-700 px-4 py-2 rounded-md font-semibold hover:bg-blue-800 hover:text-white transition"
             >
+              <User className="w-5 h-5" />
               Iniciar sesión
             </Link>
           )}
@@ -130,18 +123,10 @@ export default function NavBar() {
             <Link to="/novedades" className="hover:text-primary">
               Novedades
             </Link>
-            <Link to="/ficcion" className="hover:text-primary">
-              Ficción
-            </Link>
-            <Link to="/no-ficcion" className="hover:text-primary">
-              No Ficción
-            </Link>
-            <Link to="/infantil" className="hover:text-primary">
-              Infantil
-            </Link>
-            <Link to="/juvenil" className="hover:text-primary">
-              Juvenil
-            </Link>
+      <Link to="/catalogo/ficcion" className="hover:text-blue-600">Ficción</Link>
+      <Link to="/catalogo/no-ficcion" className="hover:text-blue-600">No Ficción</Link>
+      <Link to="/catalogo/infantil" className="hover:text-blue-600">Infantil</Link>
+      <Link to="/catalogo/juvenil" className="hover:text-blue-600">Juvenil</Link>
           </nav>
         </div>
 
