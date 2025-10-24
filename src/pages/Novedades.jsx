@@ -1,111 +1,17 @@
 import React, { useState } from "react";
-
-// Importar imágenes desde tu carpeta local
-import Banner from "../imgs/Banner.jpeg";
+import Libros from "../assets/Libros";
 import especial from "../imgs/especial.jpeg";
-import Mario  from "../imgs/Mario.jpeg";;
+import Mario  from "../imgs/Mario.jpeg";
+import { PostCard } from "../componentes/PostCard";
+import { Tag } from "../componentes/Tag";
 
-const posts = [
-  {
-    id: 1,
-    title: "Los clásicos que debes leer antes de los 30",
-    content:
-      "Desde 'Don Quijote de la Mancha' hasta 'Orgullo y Prejuicio', esta lista recorre los grandes títulos que moldearon la literatura universal. Incluye reseñas cortas y por qué aún resuenan en el siglo XXI.",
-    excerpt:
-      "Una selección de 10 novelas atemporales que forman parte de la conversación literaria.",
-    author: "María Pérez",
-    date: "Oct 12, 2025",
-    cover:
-      "https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg?auto=compress&cs=tinysrgb&w=800",
-    tags: ["Clásicos", "Recomendados"],
-  },
-  {
-    id: 2,
-    title: "Cómo leer más: estrategias y hábitos",
-    content:
-      "Explora técnicas simples para incorporar la lectura diaria: establecer metas, crear rituales de lectura y aprovechar tiempos muertos.",
-    excerpt:
-      "Pequeños cambios en tu rutina que aumentan tu lectura sin perder tiempo libre.",
-    author: "Carlos Ruiz",
-    date: "Sep 30, 2025",
-    cover:
-      "https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=800",
-    tags: ["Hábitos", "Productividad"],
-  },
-  {
-    id: 3,
-    title: "Nuevas voces: autores emergentes en 2025",
-    content:
-      "Conoce a tres autores jóvenes que están cambiando la narrativa contemporánea con historias frescas, humanas y muy cercanas.",
-    excerpt: "Una mirada a tres autores que están renovando la narrativa.",
-    author: "Ana Torres",
-    date: "Aug 18, 2025",
-    cover:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgP_8oGg7E53y0B9pggC6_sbmiJKphd5r5Wg&s",
-    tags: ["Novedades", "Autores"],
-  },
-];
-
-function Tag({ children, onClick, active }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`text-xs px-2 py-1 rounded-full border transition ${
-        active
-          ? "bg-yellow-400 text-blue-800 border-yellow-500"
-          : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-yellow-50"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function PostCard({ post, onRead }) {
-  return (
-    <article className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col md:flex-row border border-yellow-100 hover:shadow-lg transition">
-      <div className="md:w-1/3 h-44 md:h-auto">
-        <img
-          src={post.cover}
-          alt={post.title}
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="p-6 md:w-2/3 flex flex-col justify-between">
-        <div>
-          <div className="flex gap-2 mb-3">
-            {post.tags.map((t) => (
-              <Tag key={t}>{t}</Tag>
-            ))}
-          </div>
-          <h3 className="text-xl font-semibold text-blue-800 mb-2">
-            {post.title}
-          </h3>
-          <p className="text-sm text-gray-600">{post.excerpt}</p>
-        </div>
-        <div className="mt-4 flex items-center justify-between">
-          <div className="text-xs text-gray-500">
-            <div>{post.author}</div>
-            <div>{post.date}</div>
-          </div>
-          <button
-            onClick={() => onRead(post)}
-            className="px-4 py-2 bg-yellow-400 text-blue-800 rounded-full text-sm font-semibold shadow-sm hover:bg-yellow-500 transition"
-          >
-            Leer más
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 export default function Novedades() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
 
-  const filteredPosts = posts.filter((p) => {
+  const filteredPosts = Libros.filter((p) => {
     const matchesSearch =
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.author.toLowerCase().includes(search.toLowerCase());
@@ -118,29 +24,30 @@ export default function Novedades() {
       {/* 🟦 Banner principal */}
       <a href="#">
         <img
-          src={Banner}
+          src="https://www.shutterstock.com/image-vector/bookshelf-childrens-books-on-shelf-260nw-2154792057.jpg"
           alt="Banner principal"
           className="w-full h-64 object-cover rounded-2xl mb-8 shadow-md"
         />
       </a>
 
       {/* 🟨 Dos imágenes destacadas */}
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 mb-10">
-        <a href="#">
-          <img
-            src={especial}
-            alt="Imagen destacada 1"
-            className="w-full md:w-1/2 h-64 object-cover rounded-2xl shadow-md hover:opacity-90 transition"
-          />
-        </a>
-        <a href="#">
-          <img
-            src={Mario}
-            alt="Imagen destacada 2"
-            className="w-full md:w-1/2 h-64 object-cover rounded-2xl shadow-md hover:opacity-90 transition"
-          />
-        </a>
-      </div>
+<div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-center items-center gap-6 mb-10">
+  <a href="#" className="block">
+    <img
+      src={especial}
+      alt="Imagen destacada 1"
+      className="w-full md:w-[500px] h-64 object-cover rounded-2xl shadow-md hover:opacity-90 transition"
+    />
+  </a>
+  <a href="#" className="block">
+    <img
+      src={Mario}
+      alt="Imagen destacada 2"
+      className="w-full md:w-[500px] h-64 object-cover rounded-2xl shadow-md hover:opacity-90 transition"
+    />
+  </a>
+</div>
+
 
       <header className="max-w-5xl mx-auto mb-8">
         <div className="flex items-center justify-between">
