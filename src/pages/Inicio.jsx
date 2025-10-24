@@ -52,7 +52,7 @@ export default function Inicio() {
         {/* Encabezado principal */}
         <section className="mb-12 text-center">
           <h1 className="text-4xl font-bold text-gray-800">
-            Bienvenido a <span className="text-blue-800">LibroMundo</span>
+            Bienvenido a <span className="text-orange-400">LibroMundo</span>
           </h1>
           <p className="text-gray-600 mt-3 text-lg">
             Descubre libros que te inspiren, te transformen y te acompañen cada día.
@@ -73,8 +73,8 @@ export default function Inicio() {
 
                 {/* Título de bienvenida */}
         <section className="mb-10">
-          <div className="rounded-lg p-8 bg-gradient-to-r from-blue-700 to-blue-500 text-white">
-            <h1 className="text-4xl font-extrabold">Descubre las ultimas nvoedades 🚀</h1>
+          <div className="rounded-lg p-8  bg-orange-100  ">
+            <h1 className="text-4xl font-extrabold text-orange-400">Descubre las ultimas novedades 🚀</h1>
             <p className="mt-2">Miles de títulos te esperan en LibroMundo.</p>
           </div>
         </section>
@@ -85,7 +85,7 @@ export default function Inicio() {
     Autores Destacados ✨
   </h2>
 
-  <div className="relative bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl shadow-xl p-6">
+  <div className="">
     <Slider
       dots={false}
       infinite={true}
@@ -131,7 +131,7 @@ export default function Inicio() {
                 className="bg-white border border-gray-100 p-6 rounded-lg shadow-sm hover:shadow-md transition"
               >
                 <p className="italic text-gray-700">“{r.texto}”</p>
-                <p className="mt-4 text-sm font-semibold text-blue-700">– {r.nombre}</p>
+                <p className="mt-4 text-sm font-semibold text-orange-400">– {r.nombre}</p>
               </div>
             ))}
           </div>

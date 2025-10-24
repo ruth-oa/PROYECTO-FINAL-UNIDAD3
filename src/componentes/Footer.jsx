@@ -5,42 +5,49 @@ import { FaFacebook, FaInstagram, FaTiktok, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-900 text-white mt-12">
+    <footer className="bg-orange-100 text-black mt-12">
       {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-5 gap-8">
         
         {/* Sección: Nosotros */}
         <div>
-          <h4 className="font-bold text-yellow-300 text-lg mb-2">LibroMundo</h4>
-          <p className="text-sm leading-relaxed">
-            Somos una librería online comprometida con fomentar la lectura. 
-            Ofrecemos los mejores títulos y enviamos a todo el país.
-          </p>
-        </div>
-
-        {/* Sección: Información */}
-        <div>
-          <h5 className="font-semibold text-yellow-200">Sobre nosotros</h5>
-          <ul className="mt-2 text-sm space-y-1">
+          <h4 className="font-bold text-orange-400 text-lg mb-2">LibroMundo</h4>
+          <h6 className="font-semibold text-orange-400">Sobre nosotros</h6>
+         <ul className="mt-2 text-sm space-y-1">
             <li><Link to="/nosotros" className="hover:underline">Quiénes somos</Link></li>
-            <li><Link to="/politicas" className="hover:underline">Política de Privacidad</Link></li>
-            <li><Link to="/terminos" className="hover:underline">Términos y Condiciones</Link></li>
+            <p>Somos un una libreria onnline comprometida con fomentar la lectura. Ofrecemos los mejores títulos y enviamos a todo el país.</p>
           </ul>
         </div>
 
+    
+        {/*POLITICA*/}
+          <div>
+            <h5 className="font-semibold text-orange-400">Política</h5>
+            <ul >
+            <li><Link to="/nosotros" className="hover:underline">Quiénes somos</Link></li>
+            <li><Link to="/politicas" className="hover:underline">Política de Privacidad</Link></li>
+            <li><Link to="/terminos" className="hover:underline">Términos y Condiciones</Link></li>
+            <li><Link to="/terminos" className="hover:underline">Términos y Condiciones Promocionales</Link></li>
+            <li><Link to="/terminos" className="hover:underline">Recojo en tienda</Link></li>
+            <li><Link to="/terminos" className="hover:underline">Preguntas Frecuentes </Link></li>
+            </ul>
+
+          </div>
+
         {/* Sección: Ayuda / Contacto */}
         <div>
-          <h5 className="font-semibold text-yellow-200">Atención al cliente</h5>
+          <h5 className="font-semibold text-orange-400">Contactanos </h5>
           <ul className="mt-2 text-sm space-y-1">
-            <li><Link to="/contacto" className="hover:underline">Contacto</Link></li>
-            <li><Link to="/faq" className="hover:underline">Preguntas Frecuentes</Link></li>
-            <li><Link to="/reclamaciones" className="hover:underline">Libro de Reclamaciones</Link></li>
+            <li><Link to="/contacto" className="hover:underline">(+51)934998293</Link></li>
+            <li><Link to="/faq" className="hover:underline">Libromundo@gmail.com</Link></li>
+            <li><Link to="/reclamaciones" className="hover:underline">Lun a Sab de 8am a 6pm</Link></li>
+            
           </ul>
         </div>
 
         {/* Sección: Métodos de pago con logos */}
         <div>
-          <h5 className="font-semibold text-yellow-200 mb-2">Métodos de pago</h5>
+          <h5 className="font-semibold text-orange-400 mb-2">Métodos de pago</h5>
           <div className="flex flex-wrap items-center gap-3 mt-2">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
@@ -72,12 +79,11 @@ export default function Footer() {
 
         {/* Sección: Mapa */}
         <div>
-          <h5 className="font-semibold text-yellow-200">Encuéntranos</h5>
-          <div className="mt-2 rounded-lg overflow-hidden border border-blue-700">
+          <h5 className="font-semibold text-orange-400">Encuéntranos</h5>
+          <div className="mt-2 rounded-lg overflow-hidden border border-black-700">
             <iframe
               title="Ubicación de LibroMundo"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.0000000000005!2d-77.0428!3d-12.0464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c8c2f0000000%3A0x0000000000000000!2sLima%2C%20Per%C3%BA!5e0!3m2!1ses!2spe!4v1697890000000"
-              width="100%"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.753387834782!2d-77.07328412579504!3d-11.991558740873568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105ce5bd29bb957%3A0xa2b50f7978c91081!2sMunicipalidad%20de%20Los%20Olivos!5e0!3m2!1ses!2spe!4v1761232547594!5m2!1ses!2spe"
               height="120"
               allowFullScreen=""
               loading="lazy"
@@ -88,9 +94,9 @@ export default function Footer() {
       </div>
 
       {/* Redes sociales */}
-      <div className="border-t border-blue-800 py-4">
+      <div className="border-t border-black-800 py-4 bg-orange-100">
         <div className="flex justify-center space-x-6 mb-2">
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-yellow-300">
+          <a href="https://facebook.com" target="_orange" rel="noreferrer" className="hover:text-yellow-300">
             <FaFacebook size={20} />
           </a>
           <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-yellow-300">
